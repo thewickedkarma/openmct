@@ -24,10 +24,7 @@
     v-if="loaded"
     class="js-plot-options-browse"
 >
-    <ul
-        v-if="!isStackedPlotObject"
-        class="c-tree"
-    >
+    <ul class="c-tree">
         <h2 title="Plot series display properties in this object">Plot Series</h2>
         <plot-options-item
             v-for="series in plotSeries"
@@ -39,10 +36,7 @@
         v-if="plotSeries.length"
         class="grid-properties"
     >
-        <ul
-            v-if="!isStackedPlotObject"
-            class="l-inspector-part js-yaxis-properties"
-        >
+        <ul class="l-inspector-part">
             <h2 title="Y axis settings for this object">Y Axis</h2>
             <li class="grid-row">
                 <div
@@ -90,10 +84,7 @@
                 <div class="grid-cell value">{{ rangeMax }}</div>
             </li>
         </ul>
-        <ul
-            v-if="isStackedPlotObject || !isNestedWithinAStackedPlot"
-            class="l-inspector-part js-legend-properties"
-        >
+        <ul class="l-inspector-part">
             <h2 title="Legend settings for this object">Legend</h2>
             <li class="grid-row">
                 <div
@@ -153,7 +144,7 @@ export default {
     components: {
         PlotOptionsItem
     },
-    inject: ['openmct', 'domainObject', 'path'],
+    inject: ['openmct', 'domainObject'],
     data() {
         return {
             config: {},
@@ -176,21 +167,12 @@ export default {
             plotSeries: []
         };
     },
-    computed: {
-        isNestedWithinAStackedPlot() {
-            return this.path.find((pathObject, pathObjIndex) => pathObjIndex > 0 && pathObject.type === 'telemetry.plot.stacked');
-        },
-        isStackedPlotObject() {
-            return this.path.find((pathObject, pathObjIndex) => pathObjIndex === 0 && pathObject.type === 'telemetry.plot.stacked');
-        }
-    },
     mounted() {
         eventHelpers.extend(this);
         this.config = this.getConfig();
         this.registerListeners();
         this.initConfiguration();
         this.loaded = true;
-
     },
     beforeDestroy() {
         this.stopListening();

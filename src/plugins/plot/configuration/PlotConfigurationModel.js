@@ -68,8 +68,7 @@ export default class PlotConfigurationModel extends Model {
         this.series = new SeriesCollection({
             models: options.model.series,
             plot: this,
-            openmct: options.openmct,
-            palette: options.palette
+            openmct: options.openmct
         });
 
         if (this.get('domainObject').type === 'telemetry.plot.overlay') {

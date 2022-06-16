@@ -28,6 +28,7 @@
 
         &[s-selected] {
             // All frames selected while editing
+            border: $editFrameSelectedBorder;
             box-shadow: $editFrameSelectedShdw;
 
             .c-frame__move-bar {

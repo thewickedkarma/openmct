@@ -26,7 +26,6 @@ import PlotsInspectorViewProvider from './inspector/PlotsInspectorViewProvider';
 import OverlayPlotCompositionPolicy from './overlayPlot/OverlayPlotCompositionPolicy';
 import StackedPlotCompositionPolicy from './stackedPlot/StackedPlotCompositionPolicy';
 import PlotViewActions from "./actions/ViewActions";
-import StackedPlotsInspectorViewProvider from "./inspector/StackedPlotsInspectorViewProvider";
 
 export default function () {
     return function install(openmct) {
@@ -40,8 +39,9 @@ export default function () {
             initialize: function (domainObject) {
                 domainObject.composition = [];
                 domainObject.configuration = {
-                    //series is an array of objects of type: {identifier, series: {color...}, yAxis:{}}
-                    series: []
+                    series: [],
+                    yAxis: {},
+                    xAxis: {}
                 };
             },
             priority: 891
@@ -55,11 +55,7 @@ export default function () {
             creatable: true,
             initialize: function (domainObject) {
                 domainObject.composition = [];
-                domainObject.configuration = {
-                    series: [],
-                    yAxis: {},
-                    xAxis: {}
-                };
+                domainObject.configuration = {};
             },
             priority: 890
         });
@@ -69,7 +65,6 @@ export default function () {
         openmct.objectViews.addProvider(new PlotViewProvider(openmct));
 
         openmct.inspectorViews.addProvider(new PlotsInspectorViewProvider(openmct));
-        openmct.inspectorViews.addProvider(new StackedPlotsInspectorViewProvider(openmct));
 
         openmct.composition.addPolicy(new OverlayPlotCompositionPolicy(openmct).allow);
         openmct.composition.addPolicy(new StackedPlotCompositionPolicy(openmct).allow);

@@ -13,10 +13,8 @@ export default function PlotsInspectorViewProvider(openmct) {
 
             let object = selection[0][0].context.item;
 
-            const isOverlayPlotObject = object && object.type === 'telemetry.plot.overlay';
-            const isStackedPlotObject = object && object.type === 'telemetry.plot.stacked';
-
-            return isStackedPlotObject || isOverlayPlotObject;
+            return object
+                && object.type === 'telemetry.plot.overlay';
         },
         view: function (selection) {
             let component;

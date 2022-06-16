@@ -24,31 +24,21 @@
     v-if="loaded"
     class="js-plot-options-edit"
 >
-    <ul
-        v-if="!isStackedPlotObject"
-        class="c-tree"
-    >
+    <ul class="c-tree">
         <h2 title="Display properties for this object">Plot Series</h2>
         <li
             v-for="series in plotSeries"
             :key="series.key"
         >
-            <series-form
-                :series="series"
-                @seriesUpdated="updateSeriesConfigForObject"
-            />
+            <series-form :series="series" />
         </li>
     </ul>
     <y-axis-form
-        v-if="plotSeries.length && !isStackedPlotObject"
+        v-if="plotSeries.length"
         class="grid-properties"
         :y-axis="config.yAxis"
-        @seriesUpdated="updateSeriesConfigForObject"
     />
-    <ul
-        v-if="isStackedPlotObject || !isStackedPlotNestedObject"
-        class="l-inspector-part"
-    >
+    <ul class="l-inspector-part">
         <h2 title="Legend options">Legend</h2>
         <legend-form
             v-if="plotSeries.length"
@@ -71,21 +61,13 @@ export default {
         SeriesForm,
         YAxisForm
     },
-    inject: ['openmct', 'domainObject', 'path'],
+    inject: ['openmct', 'domainObject'],
     data() {
         return {
             config: {},
             plotSeries: [],
             loaded: false
         };
-    },
-    computed: {
-        isStackedPlotNestedObject() {
-            return this.path.find((pathObject, pathObjIndex) => pathObjIndex > 0 && pathObject.type === 'telemetry.plot.stacked');
-        },
-        isStackedPlotObject() {
-            return this.path.find((pathObject, pathObjIndex) => pathObjIndex === 0 && pathObject.type === 'telemetry.plot.stacked');
-        }
     },
     mounted() {
         eventHelpers.extend(this);
@@ -116,24 +98,6 @@ export default {
         resetAllSeries() {
             this.plotSeries = [];
             this.config.series.forEach(this.addSeries, this);
-        },
-
-        updateSeriesConfigForObject(config) {
-            const stackedPlotObject = this.path.find((pathObject) => pathObject.type === 'telemetry.plot.stacked');
-            let index = stackedPlotObject.configuration.series.findIndex((seriesConfig) => {
-                return this.openmct.objects.areIdsEqual(seriesConfig.identifier, config.identifier);
-            });
-            if (index < 0) {
-                index = stackedPlotObject.configuration.series.length;
-            }
-
-            const configPath = `configuration.series[${index}].${config.path}`;
-            this.openmct.objects.mutate(
-                stackedPlotObject,
-                configPath,
-                config.value
-            );
-
         }
     }
 };
