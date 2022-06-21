@@ -7,6 +7,7 @@
     "@braintree/sanitize-url": "6.0.0",
     "@percy/cli": "1.2.1",
     "@percy/playwright": "1.0.4",
+    "@playwright/experimental-ct-vue2": "^1.23.0-alpha-1655778679000",
     "@playwright/test": "1.21.1",
     "@types/eventemitter3": "^1.0.0",
     "@types/jasmine": "^4.0.1",
@@ -101,7 +102,8 @@
     "update-copyright-date": "npm run update-about-dialog-copyright && grep -lr --null --include=*.{js,scss,vue,ts,sh,html,md,frag} 'Copyright (c) 20' . | xargs -r0 perl -pi -e 's/Copyright\\s\\(c\\)\\s20\\d\\d\\-20\\d\\d/Copyright \\(c\\)\\ 2014\\-2022/gm'",
     "otherdoc": "node docs/gendocs.js --in docs/src --out dist/docs --suppress-toc 'docs/src/index.md|docs/src/process/index.md'",
     "docs": "npm run jsdoc ; npm run otherdoc",
-    "prepare": "npm run build:prod"
+    "prepare": "npm run build:prod",
+    "test-ct": "playwright test -c playwright-ct.config.ts"
   },
   "repository": {
     "type": "git",
