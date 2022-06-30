@@ -422,13 +422,14 @@ export default {
         },
         scheduleDraw() {
             if (!this.drawScheduled) {
-                requestAnimationFrame(this.draw);
                 this.drawScheduled = true;
+                requestAnimationFrame(this.draw);
             }
         },
         draw() {
-            this.drawScheduled = false;
             if (this.isDestroyed) {
+                this.drawScheduled = false;
+
                 return;
             }
 
@@ -439,6 +440,8 @@ export default {
                 this.drawRectangles();
                 this.drawHighlights();
             }
+
+            this.drawScheduled = false;
         },
         updateViewport() {
             const xRange = this.config.xAxis.get('displayRange');
