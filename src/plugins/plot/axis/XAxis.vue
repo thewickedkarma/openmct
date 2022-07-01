@@ -76,7 +76,6 @@ export default {
         return {
             selectedXKeyOptionKey: '',
             xKeyOptions: [],
-            xAxis: {},
             loaded: false,
             xAxisLabel: ''
         };
