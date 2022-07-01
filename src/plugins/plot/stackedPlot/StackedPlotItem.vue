@@ -227,28 +227,25 @@ export default {
                         return this.openmct.objects.areIdsEqual(seriesConfig.identifier, this.childObject.identifier);
                     });
 
-                    if (!persistedSeriesConfig) {
-                        persistedSeriesConfig = {
-                            series: {},
-                            yAxis: {}
+                    let domainObject = {
+                        ...this.childObject
+                    };
+                    if (persistedSeriesConfig) {
+                        domainObject.configuration = {
+                            series: [
+                                {
+                                    identifier: this.childObject.identifier,
+                                    ...persistedSeriesConfig.series
+                                }
+                            ],
+                            yAxis: persistedSeriesConfig.yAxis
+
                         };
                     }
 
                     config = new PlotConfigurationModel({
                         id: configId,
-                        domainObject: {
-                            ...this.childObject,
-                            configuration: {
-                                series: [
-                                    {
-                                        identifier: this.childObject.identifier,
-                                        ...persistedSeriesConfig.series
-                                    }
-                                ],
-                                yAxis: persistedSeriesConfig.yAxis
-
-                            }
-                        },
+                        domainObject,
                         openmct: this.openmct,
                         palette: this.colorPalette,
                         callback: (data) => {

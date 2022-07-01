@@ -244,11 +244,13 @@ export default {
             this.highlights = data;
         },
         registerSeriesListeners(configId) {
-            this.seriesConfig[configId] = this.getConfig(configId);
-            this.listenTo(this.seriesConfig[configId].series, 'add', this.addSeries, this);
-            this.listenTo(this.seriesConfig[configId].series, 'remove', this.removeSeries, this);
+            const config = this.getConfig(configId);
+            // config.series.models.forEach(this.addSeries, this);
 
-            this.seriesConfig[configId].series.models.forEach(this.addSeries, this);
+            if (config.series.models.length === 0 || config.series.models[0].keyString !== configId) {
+                this.listenTo(config.series, 'add', this.addSeries, this);
+                this.listenTo(config.series, 'remove', this.removeSeries, this);
+            }
         },
         addSeries(series) {
             const index = this.seriesModels.length;
