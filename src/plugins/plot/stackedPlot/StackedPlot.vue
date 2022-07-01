@@ -36,7 +36,7 @@
     <div class="l-view-section">
         <stacked-plot-item
             v-for="object in compositionObjects"
-            :key="object.id"
+            :key="getKeyString(object)"
             class="c-plot--stacked-container"
             :child-object="object"
             :options="options"
@@ -273,6 +273,9 @@ export default {
                 exportPNG: this.exportPNG,
                 exportJPG: this.exportJPG
             };
+        },
+        getKeyString(object) {
+            return this.openmct.objects.makeKeyString(object.identifier);
         }
     }
 };
