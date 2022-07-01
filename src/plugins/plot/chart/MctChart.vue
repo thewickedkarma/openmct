@@ -417,8 +417,8 @@ export default {
             return true;
         },
         updateLimitsAndDraw() {
-            // this.drawLimitLines();
-            // this.scheduleDraw();
+            this.drawLimitLines();
+            this.scheduleDraw();
         },
         scheduleDraw() {
             if (!this.drawScheduled) {
@@ -472,32 +472,32 @@ export default {
             this.alarmSets.forEach(this.drawAlarmPoints, this);
         },
         drawLimitLines() {
-            // if (this.canDraw()) {
-            //     this.updateViewport();
+            if (this.canDraw()) {
+                this.updateViewport();
 
-            //     if (!this.drawAPI.origin) {
-            //         return;
-            //     }
+                if (!this.drawAPI.origin) {
+                    return;
+                }
 
-            //     Array.from(this.$refs.limitArea.children).forEach((el) => el.remove());
-            //     let limitPointOverlap = [];
-            //     this.limitLines.forEach((limitLine) => {
-            //         let limitContainerEl = this.$refs.limitArea;
-            //         limitLine.limits.forEach((limit) => {
-            //             const showLabels = this.showLabels(limit.seriesKey);
-            //             if (showLabels) {
-            //                 const overlap = this.getLimitOverlap(limit, limitPointOverlap);
-            //                 limitPointOverlap.push(overlap);
-            //                 let limitLabelEl = this.getLimitLabel(limit, overlap);
-            //                 limitContainerEl.appendChild(limitLabelEl);
-            //             }
+                Array.from(this.$refs.limitArea.children).forEach((el) => el.remove());
+                let limitPointOverlap = [];
+                this.limitLines.forEach((limitLine) => {
+                    let limitContainerEl = this.$refs.limitArea;
+                    limitLine.limits.forEach((limit) => {
+                        const showLabels = this.showLabels(limit.seriesKey);
+                        if (showLabels) {
+                            const overlap = this.getLimitOverlap(limit, limitPointOverlap);
+                            limitPointOverlap.push(overlap);
+                            let limitLabelEl = this.getLimitLabel(limit, overlap);
+                            limitContainerEl.appendChild(limitLabelEl);
+                        }
 
-            //             let limitEl = this.getLimitElement(limit);
-            //             limitContainerEl.appendChild(limitEl);
+                        let limitEl = this.getLimitElement(limit);
+                        limitContainerEl.appendChild(limitEl);
 
-            //         }, this);
-            //     });
-            // }
+                    }, this);
+                });
+            }
         },
         showLabels(seriesKey) {
             return this.showLimitLineLabels.seriesKey
