@@ -203,7 +203,11 @@ define([
          * @memberof module:openmct.MCT#
          * @name telemetry
          */
-        this.telemetry = new api.TelemetryAPI(this);
+        Object.defineProperty(this, 'telemetry', {
+            value: new api.TelemetryAPI(this),
+            enumerable: false,
+            configurable: false
+        });
 
         /**
          * An interface for creating new indicators and changing them dynamically.
