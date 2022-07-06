@@ -335,7 +335,9 @@ export default class PlotSeries extends Model {
      * @private
      */
     sortedIndex(point) {
-        return _.sortedIndexBy(this.getSeriesData(), point, this.getXVal);
+        const seriesData = this.getSeriesData();
+
+        return _.sortedIndexBy(seriesData, point, this.getXVal);
     }
     /**
      * Update min/max stats for the series.
