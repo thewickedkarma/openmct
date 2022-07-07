@@ -21,73 +21,87 @@
  *****************************************************************************/
 /*jscs:disable disallowDanglingUnderscores */
 
-const helperFunctions = {
-    listenTo: function (object, event, callback, context) {
-        if (!this._listeningTo) {
-            this._listeningTo = [];
-        }
+const helperFunctions = {};
 
-        const listener = {
-            object: object,
-            event: event,
-            callback: callback,
-            context: context,
-            _cb: context ? callback.bind(context) : callback
-        };
-        if (object.addEventListener) {
-            object.addEventListener(event, listener._cb);
-        } else {
-            object.on(event, listener._cb);
-        }
+Object.defineProperties(helperFunctions, {
+    listenTo: {
+        value: function (object, event, callback, context) {
+            if (!this._listeningTo) {
+                this._listeningTo = [];
+            }
 
-        this._listeningTo.push(listener);
+            const listener = {
+                object: object,
+                event: event,
+                callback: callback,
+                context: context,
+                _cb: context ? callback.bind(context) : callback
+            };
+            if (object.addEventListener) {
+                object.addEventListener(event, listener._cb);
+            } else {
+                object.on(event, listener._cb);
+            }
+
+            this._listeningTo.push(listener);
+        },
+        enumerable: false,
+        configurable: false
     },
 
-    stopListening: function (object, event, callback, context) {
-        if (!this._listeningTo) {
-            this._listeningTo = [];
-        }
-
-        this._listeningTo.filter(function (listener) {
-            if (object && object !== listener.object) {
-                return false;
+    stopListening: {
+        value: function (object, event, callback, context) {
+            if (!this._listeningTo) {
+                this._listeningTo = [];
             }
 
-            if (event && event !== listener.event) {
-                return false;
-            }
-
-            if (callback && callback !== listener.callback) {
-                return false;
-            }
-
-            if (context && context !== listener.context) {
-                return false;
-            }
-
-            return true;
-        })
-            .map(function (listener) {
-                if (listener.unlisten) {
-                    listener.unlisten();
-                } else if (listener.object.removeEventListener) {
-                    listener.object.removeEventListener(listener.event, listener._cb);
-                } else {
-                    listener.object.off(listener.event, listener._cb);
+            this._listeningTo.filter(function (listener) {
+                if (object && object !== listener.object) {
+                    return false;
                 }
 
-                return listener;
+                if (event && event !== listener.event) {
+                    return false;
+                }
+
+                if (callback && callback !== listener.callback) {
+                    return false;
+                }
+
+                if (context && context !== listener.context) {
+                    return false;
+                }
+
+                return true;
             })
-            .forEach(function (listener) {
-                this._listeningTo.splice(this._listeningTo.indexOf(listener), 1);
-            }, this);
+                .map(function (listener) {
+                    if (listener.unlisten) {
+                        listener.unlisten();
+                    } else if (listener.object.removeEventListener) {
+                        listener.object.removeEventListener(listener.event, listener._cb);
+                    } else {
+                        listener.object.off(listener.event, listener._cb);
+                    }
+
+                    return listener;
+                })
+                .forEach(function (listener) {
+                    this._listeningTo.splice(this._listeningTo.indexOf(listener), 1);
+                }, this);
+        },
+        enumerable: false,
+        configurable: false
     },
 
-    extend: function (object) {
-        object.listenTo = helperFunctions.listenTo;
-        object.stopListening = helperFunctions.stopListening;
+    extend: {
+        value: function (object) {
+            object.listenTo = helperFunctions.listenTo;
+            object.stopListening = helperFunctions.stopListening;
+        },
+        enumerable: false,
+        configurable: false
     }
-};
+});
 
 export default helperFunctions;
 
