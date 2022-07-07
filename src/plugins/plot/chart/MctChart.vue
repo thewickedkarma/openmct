@@ -114,7 +114,7 @@ export default {
         this.listenTo(this.config.yAxis, 'change:key', this.clearOffset, this);
         this.listenTo(this.config.yAxis, 'change', this.updateLimitsAndDraw);
         this.listenTo(this.config.xAxis, 'change', this.updateLimitsAndDraw);
-        this.config.series.models.forEach(this.onSeriesAdd, this);
+        this.config.series.forEach(this.onSeriesAdd, this);
     },
     beforeDestroy() {
         this.destroy();
