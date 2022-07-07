@@ -85,8 +85,10 @@ export default {
             loading: false,
             compositionObjects: [],
             tickWidthMap: {},
+            legend: {},
             loaded: false,
             lockHighlightPoint: false,
+            highlights: [],
             showLimitLineLabels: undefined,
             colorPalette: new ColorPalette()
         };
@@ -113,7 +115,6 @@ export default {
         eventHelpers.extend(this);
 
         this.seriesModels = [];
-        this.highlights = [];
 
         const configId = this.openmct.objects.makeKeyString(this.domainObject.identifier);
         this.config = this.getConfig(configId);
