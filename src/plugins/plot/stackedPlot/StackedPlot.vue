@@ -26,6 +26,13 @@
     class="c-plot c-plot--stacked holder holder-plot has-control-bar"
     :class="[plotLegendExpandedStateClass, plotLegendPositionClass]"
 >
+    <plot-legend
+        :cursor-locked="!!lockHighlightPoint"
+        :series="seriesModels"
+        :highlights="highlights"
+        :legend="legend"
+        @legendHoverChanged="legendHoverChanged"
+    />
     <div class="l-view-section">
         <stacked-plot-item
             v-for="object in compositionObjects"
@@ -89,6 +96,7 @@ export default {
             loaded: false,
             lockHighlightPoint: false,
             highlights: [],
+            seriesModels: [],
             showLimitLineLabels: undefined,
             colorPalette: new ColorPalette()
         };
@@ -113,8 +121,6 @@ export default {
     },
     mounted() {
         eventHelpers.extend(this);
-
-        this.seriesModels = [];
 
         const configId = this.openmct.objects.makeKeyString(this.domainObject.identifier);
         this.config = this.getConfig(configId);
